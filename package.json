@@ -1,0 +1,27 @@
+{
+  "name": "vegvesen",
+  "version": "0.0.1",
+  "description": "Node.JS wrapper for Statens Vegvesens NVDB REST APIs",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djxfade/node-vegvesen.git"
+  },
+  "keywords": [
+    "vegvesen",
+    "vegvesen.no",
+    "nvdb",
+    "rest",
+    "api"
+  ],
+  "author": "Thomas Alrek <thomas@alrek.no>",
+  "license": "GPLV2",
+  "bugs": {
+    "url": "https://github.com/djxfade/node-vegvesen/issues"
+  },
+  "homepage": "https://github.com/djxfade/node-vegvesen#readme",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "node-rest-client": "^1.8.0"
+  }
+}
