@@ -1,2 +1,2 @@
 # node-vegvesen
-Node.JS wrapper for Statens Vegvesen's NDDB REST APIs
+Node.JS wrapper for Statens Vegvesen's NVDB REST APIs
