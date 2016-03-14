@@ -15,12 +15,13 @@
     "api"
   ],
   "author": "Thomas Alrek <thomas@alrek.no>",
-  "license": "GPLV2",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/djxfade/node-vegvesen/issues"
   },
   "homepage": "https://github.com/djxfade/node-vegvesen#readme",
   "dependencies": {
+    "async": "^1.5.2",
     "colors": "^1.1.2",
     "node-rest-client": "^1.8.0"
   }

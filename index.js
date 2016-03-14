@@ -1,9 +1,12 @@
 module.exports = function(api_endpoint){
 
     /* load required libs */
-    var colors = require("colors");
     var async = require("async");
     var Client = require('node-rest-client').Client;
+    var helpers = require("./lib/helpers");
+    var log = helpers.log;
+    var _toCamelCase = helpers.toCamelCase;
+    var _strEncode = helpers.strEncode;
 
     /**
      * Holds the API endpoint root url
@@ -34,156 +37,142 @@ module.exports = function(api_endpoint){
      * Header object
      * @type object
      */
-    var headers = {
-        "Accept": "application/vnd.vegvesen.nvdb-v1+json", 
-        "Content-Type": "application/vnd.vegvesen.nvdb-v1+json; charset=utf-8"
+    var args = {
+        headers: { 
+            "Accept": "application/vnd.vegvesen.nvdb-v1+json", 
+            "Content-Type": "application/vnd.vegvesen.nvdb-v1+json; charset=utf-8"
+        },
+        requestConfig: {
+            timeout: 1000,
+            noDelay: true,
+            keepAlive: true
+        },
+        responseConfig: {
+            timeout: 1000 //response timeout 
+	}
     };
     
     /**
-     * fetches a resource from API endpoint, then runs callback function
-     * @param string root
-     * @param function callback
-     */    
-    function _getResources(root, callback){
+     * Creates functions for API urls
+     * @param object value
+     * @returns function
+     */
+    function functionFactory(value){
+        var fn;
+        var url = apiEndpoint + value.uri + '/';
+        var name = _toCamelCase(value.rel);
+        var fullName = name + "()";
+        var deprecation = fullName + " is deprecated";
+        var deprecated = false;
         
-        var callback = callback;
-        
-        var args = {
-            headers: headers
+        /**
+         * Function template
+         * @param string url
+         * @param function callback
+         */
+        function fnTemplate(url, callback){
+            client.get(url + '/', args, function(data, response){
+                if(typeof data !== 'object'){
+                    throw "Invalid data recieved from API endpoint";
+                }
+                var data = JSON.parse(data.toString());
+                if(typeof callback !== 'undefined'){
+                    if(typeof data !== 'undefined'){
+                        callback(data);
+                    }else{
+                        callback();
+                    }
+                }
+            });    
         };
 
-        client.get(apiEndpoint + root, args, function(data, response){
-            try{
-                var data = JSON.parse(data);
-                callback(data);
-            }catch(e){
-                console.log(colors.inverse(colors.red('Could not parse ' + apiEndpoint + root + ', error: ' + e.message)));
-                return;
+        if(typeof value.status !== 'undefined'){
+            if(value.status === 'utgår'){
+                deprecated = true;
             }
-        }).on('error', function (err) {
-            console.log(colors.inverse(colors.red('[Error] something went wrong on the request')));
-        });
+        }
 
-    };
-    
-    /*
-     * Converts strings with dash to camelCase
-     * @param string str
-     * @returns string
-     */
-    function _toCamelCase(str){
-        return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase()});
-    }
-    
-    /**
-     * Encodes variables to string
-     * @param mixed str
-     * @returns string
-     */
-    function _strEncode(str){
-        switch(typeof str){
-            case 'object':
-                return JSON.stringify(str);
-            case 'number':
-                return str.toString();
-            case 'array':
-                throw 'Parameter cannot be Array';
-            case 'string':
-                return str;
-            default:
-                return str.toString();
+        if(/{.+?}/g.test(url)){
+            fn = function(params, callback){
+                if(deprecated){
+                    log.notice(deprecation);
+                }
+                if(url.match(/{.+?}/g).length === 1){
+                    url = url.replace(/{.+?}/g, function(){
+                        return encodeURIComponent(_strEncode(params));
+                    });
+                }else{
+                    if(typeof params !== 'array' && typeof params !== 'object'){
+                        log.warning(fullName + ": multiple params must be array");
+                        return;
+                    }
+                    if(params.length < url.match(/{.+?}/g).length){
+                        log.warning(fullName + ": " + (url.match(/{.+?}/g).length - params.length) + " paramter(s) missing");
+                        return;
+                    }
+                    url.replace(/{.+?}/g, function(){
+                        return encodeURIComponent(_strEncode(params.shift())); 
+                    });    
+                }
+                fnTemplate(url, callback);
+            };
+        }else{
+            fn = function(callback){
+                if(deprecated){
+                    log.notice(deprecation);
+                }
+                fnTemplate(url, callback);
+            };
         };
-    }
-    
-    /**
-     * Fetches child nodes of every resource from the API endpoint
-     * and binds function handlers to each child to this
-     * @param string key
-     */
-    function getChildNodes(key){
-        if(typeof _this[key].url !== 'undefined'){
-            _getResources(_this[key].url, function(child){
-                if(typeof child.ressurser !== 'undefined'){
-                    for(var i = 0; i < child.ressurser.length; i++){
-                        (function(index){
-                            var childNode = _toCamelCase(child.ressurser[i].rel);
-                            var url = child.ressurser[index].uri;
 
-                            var functionName = key + "." + childNode + "()";
-                            var deprecationMsg = colors.inverse(colors.cyan(functionName + " is deprecated"));
+        return fn;
+    };
 
-                            var deprecated = false;
-
-                            if(typeof child.ressurser[i].status !== 'undefined'){
-                                if(child.ressurser[i].status === 'utgår'){
-                                    deprecated = true;
-                                }
-                            }
-
-                            if(/{.+?}/g.test(url)){
-                                _this[key][childNode] = function(params, callback){
-                                    if(deprecated){
-                                        console.log(deprecationMsg);
-                                    }
-                                    if(url.match(/{.+?}/g).length === 1){
-                                        url = url.replace(/{.+?}/g, function(){
-                                            return encodeURIComponent(_strEncode(params));
-                                        });
-                                    }else{
-                                        if(typeof params !== 'array' && typeof params !== 'object'){
-                                            console.log(colors.inverse(colors.yellow(functionName + ": multiple params must be array")));
-                                            return;
-                                        }
-                                        if(params.length < url.match(/{.+?}/g).length){
-                                            console.log(colors.inverse(colors.yellow(functionName + ": " + (url.match(/{.+?}/g).length - params.length) + " paramter(s) missing")));
-                                            return;
-                                        }
-                                        url.replace(/{.+?}/g, function(){
-                                            return encodeURIComponent(_strEncode(params.shift())); 
-                                        });    
-                                    }
-
-                                    _getResources(url, callback);
-                                };
-
-                            }else{
-                                _this[key][childNode] = function(callback){
-                                    if(deprecated){
-                                        console.log(deprecationMsg);
-                                    }
-                                    _getResources(url, callback);
-                                };
-                            }
-                            delete _this[key].url;
-                        })(i);
-                    };
-                };
-            });
-        };  
-    }
-    
     /**
      * Connect to the API endpoint, and fetch resources
      * @param function callback
      */
     this.connect = function(callback){
-               
-        _getResources('/', function(root){
-            if(typeof root.ressurser !== 'undefined'){
-                (function(){
-                    for(var i = 0; i < root.ressurser.length; i++){
-                        var rootNode = _toCamelCase(root.ressurser[i].rel);
-                        var rootUrl = root.ressurser[i].uri;
-                        _this[rootNode] = {};
-                        _this[rootNode].url = rootUrl;
-                        getChildNodes(rootNode);
-                    };    
-                })();
-                callback();
-            }else{
-                throw colors.inverse(colors.red('Could not fetch resources from API endpoint'));;
-            };
+        
+        client.get(apiEndpoint + '/', args, function(data, response){
+            try{
+                var data = JSON.parse(data.toString());
+                async.forEachOf(
+                    data.ressurser, 
+                    function(value, key, _callback){
+                        var node = _toCamelCase(value.rel);
+                        var url = value.uri;
+                        _this[node] = {};
+                        client.get(apiEndpoint + url + '/', args, function(data, response){
+                            try{
+                                var data = JSON.parse(data.toString());
+
+                                async.forEachOf(
+                                    data.ressurser, 
+                                    function(value, key, __callback){
+                                        _this[node][_toCamelCase(value.rel)] = functionFactory(value);
+                                        __callback();
+                                    }, 
+                                    _callback
+                                );
+                        
+                            }catch(e){
+                                delete _this[node];
+                                log.warning("API " + url + " is currently not available");
+                                _callback();
+                            }
+
+                        });
+                    }, 
+                    callback
+                );
+            }catch(e){
+                log.error(e.message);
+            }
+        }).on('error', function (err) {
+            log.error('something went wrong on the request');
         });
+        
     };
     
 };
