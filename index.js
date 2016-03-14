@@ -71,7 +71,7 @@ module.exports = function(api_endpoint){
          * @param function callback
          */
         function fnTemplate(url, callback){
-            client.get(url + '/', args, function(data, response){
+            client.get(url, args, function(data, response){
                 if(typeof data !== 'object'){
                     throw "Invalid data recieved from API endpoint";
                 }
