@@ -13,7 +13,6 @@ module.exports = function(api_endpoint, options){
     var Factory = require("./lib/factory");
     var log = helpers.log;
     var _toCamelCase = helpers.toCamelCase;
-    var _strEncode = helpers.strEncode;
 
     /**
      * Holds the API endpoint root url
@@ -27,27 +26,6 @@ module.exports = function(api_endpoint, options){
     }else{
         apiEndpoint = api_endpoint;
     }
-    
-    /**
-     * Function template
-     * @param string url
-     * @param function callback
-     */
-    var fnTemplate = function(url, callback){
-        client.get(url, args, function(data, response){
-            if(typeof data !== 'object'){
-                throw "Invalid data recieved from API endpoint";
-            }
-            var data = JSON.parse(data.toString());
-            if(typeof callback !== 'undefined'){
-                if(typeof data !== 'undefined'){
-                    callback(data);
-                }else{
-                    callback();
-                }
-            }
-        });    
-    };
     
     /*
      * A reference variable to 'this'
@@ -120,7 +98,7 @@ module.exports = function(api_endpoint, options){
                                 async.forEachOf(
                                     data.ressurser, 
                                     function(value, key, __callback){
-                                        _this[node][_toCamelCase(value.rel)] = factory.create(fnTemplate, apiEndpoint, value);
+                                        _this[node][_toCamelCase(value.rel)] = factory.create(client, args, apiEndpoint, value);
                                         __callback();
                                     }, 
                                     _callback

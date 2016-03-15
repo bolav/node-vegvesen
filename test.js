@@ -7,8 +7,12 @@
 var vegvesenClient  = require("./index.js");
 var vegvesen = new vegvesenClient();
 
-/* Connect to the default API endpoint, and log all exposed methods */
-
 vegvesen.connect(function(){
-    console.log(vegvesen);
+    vegvesen.vegobjekter.spesifiktVegobjekt(141479144, function(vegobjekt){
+        var station = vegobjekt.egenskaper[0].verdi;
+        var type = vegobjekt.egenskaper[1].navn;
+        var price = vegobjekt.egenskaper[1].verdi;
+        var unit = vegobjekt.egenskaper[1].enhet.kortNavn;
+        console.log("Toll station: " + station + ", " + type + ": " + price + " " + unit);
+    });
 });
