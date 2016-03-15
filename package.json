@@ -20,9 +20,14 @@
     "url": "https://github.com/djxfade/node-vegvesen/issues"
   },
   "homepage": "https://github.com/djxfade/node-vegvesen#readme",
+  "scripts": {
+    "test": "mocha --reporter spec test"
+    },
   "dependencies": {
     "async": "^1.5.2",
-    "colors": "^1.1.2",
     "node-rest-client": "^1.8.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
   }
 }
