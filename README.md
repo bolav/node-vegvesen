@@ -92,11 +92,14 @@ functions exposed by the API:
 * vegobjektTypeDefinisjon()
 * egenskapsTypeDefinisjon()
 * datakatalogVersjon()
+
 ##### vegobjekter
 * vegobjekterAvGittType()
 * spesifiktVegobjekt()
+
 ##### sokegrensesnitt
 * sok()
+
 ##### vegreferanse
 * vegreferanseFraUtm33Koordinat()
 * vegreferanseFraWgs84Koordinat()
@@ -104,6 +107,7 @@ functions exposed by the API:
 * vegreferanseFraVegreferansenavn()
 * vegreferanse()
 * veglenkeTilVegreferanse()
+
 ##### omrader
 * regioner()
 * vegavdelinger()
@@ -112,6 +116,7 @@ functions exposed by the API:
 * kommuner()
 * riksvegruter()
 * kontraktsomrader()
+
 ##### endringer
 * endringerObjekttype
 
