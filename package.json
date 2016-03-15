@@ -1,6 +1,6 @@
 {
   "name": "vegvesen",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Node.JS wrapper for Statens Vegvesens NVDB REST APIs",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/djxfade/node-vegvesen#readme",
   "scripts": {
     "test": "mocha --reporter spec test"
-    },
+  },
   "dependencies": {
     "async": "^1.5.2",
     "node-rest-client": "^1.8.0"
