@@ -59,7 +59,7 @@ module.exports = function(api_endpoint){
      */
     function functionFactory(value){
         var fn;
-        var url = apiEndpoint + value.uri + '/';
+        var url = apiEndpoint + value.uri;
         var name = _toCamelCase(value.rel);
         var fullName = name + "()";
         var deprecation = fullName + " is deprecated";
@@ -143,7 +143,7 @@ module.exports = function(api_endpoint){
                         var node = _toCamelCase(value.rel);
                         var url = value.uri;
                         _this[node] = {};
-                        client.get(apiEndpoint + url + '/', args, function(data, response){
+                        client.get(apiEndpoint + url, args, function(data, response){
                             try{
                                 var data = JSON.parse(data.toString());
 
