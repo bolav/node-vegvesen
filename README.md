@@ -15,7 +15,7 @@ NodeJS wrapper for Statens Vegvesen's NVDB REST APIs
 ### Usage
 
 ```javascript
-var vegvesenClient  = require("./index.js");
+var vegvesenClient  = require("vegvesen");
 var vegvesen = new vegvesenClient();
 
 vegvesen.connect(function(){
