@@ -33,13 +33,13 @@ the official [documentation](https://www.vegvesen.no/nvdb/api/dokumentasjon/).
 If the API endpoint url changes, you can provide an optional argument in the constructor
 
 ```javascript
-new VegvesenClient("http://alternative.api.url");
+new VegvesenClient("https://api.endpoint.url");
 ```
 
 You can also provide an optional options object to change request and response parameters
 
 ```javascript
-new VegvesenClient("http://api.endpoint.url", {
+new VegvesenClient("https://api.endpoint.url", {
     requestConfig: {
      timeout: 1000,
         noDelay: true,
@@ -82,46 +82,38 @@ vegvesen.vegobjekter.spesifiktVegobjekt(487458622, function(data){
 });
 ```
 
+### Methods
+
 Currently at the time of publishing this version of the module, this is the
 functions exposed by the API:
 
-```javascript
-{
-    definisjoner: { 
-        vegobjektTyper: [Function],
-        vegobjektTypeDefinisjon: [Function],
-        egenskapsTypeDefinisjon: [Function],
-        datakatalogVersjon: [Function]
-    },
-    vegobjekter: { 
-        vegobjekterAvGittType: [Function],
-        spesifiktVegobjekt: [Function] 
-    },
-    sokegrensesnitt: { 
-        sok: [Function] 
-    },
-    vegreferanse: { 
-        vegreferanseFraUtm33Koordinat: [Function],
-        vegreferanseFraWgs84Koordinat: [Function],
-        vegreferanseFraVeglenke: [Function],
-        vegreferanseFraVegreferansenavn: [Function],
-        vegreferanse: [Function],
-        veglenkeTilVegreferanse: [Function] 
-    },
-    omrader: { 
-        regioner: [Function],
-        vegavdelinger: [Function],
-        fylker: [Function],
-        politidistrikter: [Function],
-        kommuner: [Function],
-        riksvegruter: [Function],
-        kontraktsomrader: [Function]
-    },
-    endringer: { 
-        endringerObjekttype: [Function] 
-    } 
-}
-```
+##### definisjoner
+* vegobjektTyper()
+* vegobjektTypeDefinisjon()
+* egenskapsTypeDefinisjon()
+* datakatalogVersjon()
+##### vegobjekter
+* vegobjekterAvGittType()
+* spesifiktVegobjekt()
+##### sokegrensesnitt
+* sok()
+##### vegreferanse
+* vegreferanseFraUtm33Koordinat()
+* vegreferanseFraWgs84Koordinat()
+* vegreferanseFraVeglenke()
+* vegreferanseFraVegreferansenavn()
+* vegreferanse()
+* veglenkeTilVegreferanse()
+##### omrader
+* regioner()
+* vegavdelinger()
+* fylker()
+* politidistrikter()
+* kommuner()
+* riksvegruter()
+* kontraktsomrader()
+##### endringer
+* endringerObjekttype
 
 ### Contact
 
