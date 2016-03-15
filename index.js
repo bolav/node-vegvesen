@@ -1,9 +1,16 @@
-module.exports = function(api_endpoint){
+/**
+ * @package vegvesen
+ * @copyright (c) 2016, Thomas Alrek
+ * @author Thomas Alrek <thomas@alrek.no>
+ */
+
+module.exports = function(api_endpoint, options){
 
     /* load required libs */
     var async = require("async");
     var Client = require('node-rest-client').Client;
     var helpers = require("./lib/helpers");
+    var Factory = require("./lib/factory");
     var log = helpers.log;
     var _toCamelCase = helpers.toCamelCase;
     var _strEncode = helpers.strEncode;
@@ -21,6 +28,27 @@ module.exports = function(api_endpoint){
         apiEndpoint = api_endpoint;
     }
     
+    /**
+     * Function template
+     * @param string url
+     * @param function callback
+     */
+    var fnTemplate = function(url, callback){
+        client.get(url, args, function(data, response){
+            if(typeof data !== 'object'){
+                throw "Invalid data recieved from API endpoint";
+            }
+            var data = JSON.parse(data.toString());
+            if(typeof callback !== 'undefined'){
+                if(typeof data !== 'undefined'){
+                    callback(data);
+                }else{
+                    callback();
+                }
+            }
+        });    
+    };
+    
     /*
      * A reference variable to 'this'
      * @type module.exports
@@ -32,6 +60,12 @@ module.exports = function(api_endpoint){
      * @type module.exports.Client
      */
     var client = new Client();
+    
+    /**
+     * Local function factory object
+     * @type module.exports.Factory
+     */
+    var factory = new Factory();
     
     /**
      * Header object
@@ -53,80 +87,16 @@ module.exports = function(api_endpoint){
     };
     
     /**
-     * Creates functions for API urls
-     * @param object value
-     * @returns function
+     * if options are provided, add them to args
      */
-    function functionFactory(value){
-        var fn;
-        var url = apiEndpoint + value.uri;
-        var name = _toCamelCase(value.rel);
-        var fullName = name + "()";
-        var deprecation = fullName + " is deprecated";
-        var deprecated = false;
-        
-        /**
-         * Function template
-         * @param string url
-         * @param function callback
-         */
-        function fnTemplate(url, callback){
-            client.get(url, args, function(data, response){
-                if(typeof data !== 'object'){
-                    throw "Invalid data recieved from API endpoint";
-                }
-                var data = JSON.parse(data.toString());
-                if(typeof callback !== 'undefined'){
-                    if(typeof data !== 'undefined'){
-                        callback(data);
-                    }else{
-                        callback();
-                    }
-                }
-            });    
-        };
-
-        if(typeof value.status !== 'undefined'){
-            if(value.status === 'utgår'){
-                deprecated = true;
-            }
+    if(typeof options === 'object'){
+        if(typeof options.requestConfig === 'object'){
+            args.requestConfig = options.requestConfig;
         }
-
-        if(/{.+?}/g.test(url)){
-            fn = function(params, callback){
-                if(deprecated){
-                    log.notice(deprecation);
-                }
-                if(url.match(/{.+?}/g).length === 1){
-                    url = url.replace(/{.+?}/g, function(){
-                        return encodeURIComponent(_strEncode(params));
-                    });
-                }else{
-                    if(typeof params !== 'array' && typeof params !== 'object'){
-                        log.warning(fullName + ": multiple params must be array");
-                        return;
-                    }
-                    if(params.length < url.match(/{.+?}/g).length){
-                        log.warning(fullName + ": " + (url.match(/{.+?}/g).length - params.length) + " paramter(s) missing");
-                        return;
-                    }
-                    url.replace(/{.+?}/g, function(){
-                        return encodeURIComponent(_strEncode(params.shift())); 
-                    });    
-                }
-                fnTemplate(url, callback);
-            };
-        }else{
-            fn = function(callback){
-                if(deprecated){
-                    log.notice(deprecation);
-                }
-                fnTemplate(url, callback);
-            };
-        };
-
-        return fn;
-    };
+        if(typeof options.responseConfig === 'object'){
+            args.responseConfig = options.responseConfig;
+        }   
+    }
 
     /**
      * Connect to the API endpoint, and fetch resources
@@ -150,7 +120,7 @@ module.exports = function(api_endpoint){
                                 async.forEachOf(
                                     data.ressurser, 
                                     function(value, key, __callback){
-                                        _this[node][_toCamelCase(value.rel)] = functionFactory(value);
+                                        _this[node][_toCamelCase(value.rel)] = factory.create(fnTemplate, apiEndpoint, value);
                                         __callback();
                                     }, 
                                     _callback

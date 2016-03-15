@@ -19,31 +19,52 @@ vegvesen.connect(){function(){
 
 ```
 
+
+
 All methods are loaded dynamically when connect() is called. This is 
 dictated by the specification of the API. So for an up-to-date guide, check
 the official [documentation](https://www.vegvesen.no/nvdb/api/dokumentasjon/).
+
+If the API endpoint url changes, you can provide an optional argument in the constructor
+
+`new VegvesenClient("http://alternative.api.url");`
+
+You can also provide an optional options object to change request and response parameters
+
+```
+new VegvesenClient("http://api.endpoint.url", {
+    requestConfig: {
+     timeout: 1000,
+        noDelay: true,
+        keepAlive: true
+    },
+    responseConfig: {
+        timeout: 1000 //response timeout 
+    }
+});
+```
 
 Function names are based off of the "rel" property of each endpoint.
 So e.g. "<ressurs rel="spesifikt-vegobjekt" uri="/vegobjekter/objekt/{vegobjekt-id}"/>",
 can be accessed by calling 
 
-`vegvesen.vegobjekter.spesifiktVegobject();`.
+`vegvesen.vegobjekter.spesifiktVegobjekt();`.
 
 Some methods requires parameters, theese can be specified like:
 
-`vegvesen.vegobjekter.spesifiktVegobject(487458622);`
+`vegvesen.vegobjekter.spesifiktVegobjekt(487458622);`
 
 In case a method requires multiple parameters, they can be supplied by passing an
 array containing the arguments, e.g.
 
-`vegvesen.vegobjekter.spesifiktVegobject([487458622,598569733]);`.
+`vegvesen.vegobjekter.spesifiktVegobjekt([487458622,598569733]);`.
 
 
 To access the result of a API query, every method also takes a callback function as
 the last argument, e.g.
 
 ```
-vegvesen.vegobjekter.spesifiktVegobject(487458622, function(data){
+vegvesen.vegobjekter.spesifiktVegobjekt(487458622, function(data){
     console.log(data);
 });
 ```
