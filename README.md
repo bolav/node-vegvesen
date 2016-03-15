@@ -1,5 +1,12 @@
-# node-vegvesen
-Node.JS wrapper for Statens Vegvesen's NVDB REST APIs
+# vegvesen
+NodeJS wrapper for Statens Vegvesen's NVDB REST APIs
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Examples](#examples)
+* [Methods](#methods)
+* [Contact](#contact)
+* [Legal](#legal)
 
 ### Installation
 
