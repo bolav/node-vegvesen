@@ -24,9 +24,6 @@ vegvesen.connect(function(){
     });
 });
 ```
-Output:
-
-`Toll station: Damsgård, Takst stor bil: 38.0 Kr`
 
 All methods are loaded dynamically when connect() is called. This is 
 dictated by the specification of the API. So for an up-to-date guide, check
