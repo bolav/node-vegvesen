@@ -19,12 +19,8 @@ var vegvesenClient  = require("vegvesen");
 var vegvesen = new vegvesenClient();
 
 vegvesen.connect(function(){
-    vegvesen.vegobjekter.spesifiktVegobjekt(141479144, function(vegobjekt){
-        var station = vegobjekt.egenskaper[0].verdi;
-        var type = vegobjekt.egenskaper[1].navn;
-        var price = vegobjekt.egenskaper[1].verdi;
-        var unit = vegobjekt.egenskaper[1].enhet.kortNavn;
-        console.log("Toll station: " + station + ", " + type + ": " + price + " " + unit);
+    vegvesen.vegobjekter.spesifiktVegobjekt(82559833, function(obj){
+        console.log(obj);
     });
 });
 ```
@@ -59,7 +55,11 @@ new VegvesenClient("https://api.endpoint.url", {
 ```
 
 Function names are based off of the "rel" property of each API object.
-So e.g. "<ressurs rel="spesifikt-vegobjekt" uri="/vegobjekter/objekt/{vegobjekt-id}"/>",
+So e.g. 
+
+```xml
+<ressurs rel="spesifikt-vegobjekt" uri="/vegobjekter/objekt/{vegobjekt-id}"/>
+```
 can be accessed by calling 
 
 ```javascript
@@ -76,7 +76,7 @@ In case a method requires multiple parameters, they can be supplied by passing a
 array containing the arguments, e.g.
 
 ```javascript
-vegvesen.vegobjekter.spesifiktVegobjekt([487458622,598569733]);
+vegvesen.vegreferanse.vegreferanseFraWgs84Koordinat([5.26835878197702, 60.38078971681345]});
 ```
 
 
