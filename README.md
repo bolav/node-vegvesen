@@ -134,7 +134,7 @@ the npm package.json
 
 Copyright Thomas Alrek (C) 2016
 
-This module is released as GNU General Public License version 2. You are free to use this in your own applications.
+This module is released as GNU General Public License version 2, see file LICENSE for details. You are free to use this in your own applications.
 However, the data gathered from NVDB is licensed under the [NLOD](http://data.norge.no/nlod/no/1.0) license (Norwegian only).
 If you use the data in your application, you are required by this license to always include the following text:
 
