@@ -1,6 +1,6 @@
 {
   "name": "vegvesen",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Node.JS wrapper for Statens Vegvesens NVDB REST APIs",
   "main": "index.js",
   "repository": {
