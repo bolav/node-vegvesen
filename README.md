@@ -125,7 +125,7 @@ functions exposed by the API:
 * kontraktsomrader()
 
 ##### endringer
-* endringerObjekttype
+* endringerObjekttype()
 
 ### Contact
 
