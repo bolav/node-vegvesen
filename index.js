@@ -13,6 +13,7 @@ module.exports = function(api_endpoint, options){
     var Factory = require("./lib/factory");
     var log = helpers.log;
     var _toCamelCase = helpers.toCamelCase;
+    var isEmpty = helpers.isEmpty;
 
     /**
      * Holds the API endpoint root url
@@ -61,7 +62,7 @@ module.exports = function(api_endpoint, options){
         },
         responseConfig: {
             timeout: 1000 //response timeout 
-	}
+	   }
     };
     
     /**
@@ -81,7 +82,6 @@ module.exports = function(api_endpoint, options){
      * @param function callback
      */
     this.connect = function(callback){
-        
         client.get(apiEndpoint + '/', args, function(data, response){
             try{
                 var data = JSON.parse(data.toString());
@@ -103,16 +103,24 @@ module.exports = function(api_endpoint, options){
                                     }, 
                                     _callback
                                 );
-                        
                             }catch(e){
                                 delete _this[node];
                                 log.warning("API " + url + " is currently not available");
                                 _callback();
-                            }
-
+                            };
                         });
                     }, 
-                    callback
+                    function(){
+                        /* Remove empty API nodes */
+                        Object.keys(_this).forEach(function(key,index){
+                            if(isEmpty(_this[key])){
+                                delete _this[key];
+                            };
+                        });
+                        if(typeof callback !== 'undefined'){
+                            callback();
+                        };
+                    }
                 );
             }catch(e){
                 log.error(e.message);
@@ -120,7 +128,5 @@ module.exports = function(api_endpoint, options){
         }).on('error', function (err) {
             log.error('something went wrong on the request');
         });
-        
     };
-    
 };
