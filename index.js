@@ -52,8 +52,7 @@ module.exports = function(api_endpoint, options){
      */
     var args = {
         headers: { 
-            "Accept": "application/vnd.vegvesen.nvdb-v1+json", 
-            "Content-Type": "application/vnd.vegvesen.nvdb-v1+json; charset=utf-8"
+            "Accept": "application/vnd.vegvesen.nvdb-v1+json"
         },
         requestConfig: {
             timeout: 1000,
