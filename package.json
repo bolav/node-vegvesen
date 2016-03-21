@@ -2,7 +2,7 @@
   "name": "vegvesen",
   "version": "0.2.0",
   "description": "Node.JS wrapper for Statens Vegvesens NVDB REST APIs",
-  "main": "index.js",
+  "main": "vegvesen.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alrek-consulting/node-vegvesen.git"
