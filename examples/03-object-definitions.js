@@ -14,3 +14,5 @@ vegvesen.connect(function(){
         console.log(obj);
     });
 });
+
+console.log("Connecting...");

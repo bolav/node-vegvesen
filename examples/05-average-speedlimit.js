@@ -32,3 +32,5 @@ vegvesen.connect(function(){
     });
     console.log("Fetching data, please wait...");
 });
+
+console.log("Connecting...");

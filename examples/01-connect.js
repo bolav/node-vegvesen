@@ -14,3 +14,5 @@ vegvesen.connect(function(){
 	/* dumps the vegvesen object, usefull for checking available API calls */
 	console.log(vegvesen);
 });
+
+console.log("Connecting...");
