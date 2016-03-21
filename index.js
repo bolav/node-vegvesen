@@ -7,13 +7,15 @@
 module.exports = function(api_endpoint, options){
 
     /* load required libs */
-    var async = require("async");
-    var Client = require('node-rest-client').Client;
-    var helpers = require("./lib/helpers");
-    var Factory = require("./lib/factory");
-    var log = helpers.log;
-    var _toCamelCase = helpers.toCamelCase;
-    var isEmpty = helpers.isEmpty;
+    var async = require("async"),
+    Client = require('node-rest-client').Client,
+    Helpers = require("./lib/helpers"),
+    Factory = require("./lib/factory");
+
+    /* assign helper functions to constants */
+    const log = Helpers.log,
+    toCamelCase = Helpers.toCamelCase,
+    isEmpty = Helpers.isEmpty;
 
     /**
      * Holds the API endpoint root url
@@ -21,18 +23,11 @@ module.exports = function(api_endpoint, options){
      */
     var apiEndpoint;
     
-    /* if api_endpoint arg was not supplied, we set it to default */
-    if(typeof api_endpoint === 'undefined'){
-        apiEndpoint = "https://www.vegvesen.no/nvdb/api";
-    }else{
-        apiEndpoint = api_endpoint;
-    }
-    
-    /*
+    /**
      * A reference variable to 'this'
      * @type module.exports
      */
-    var _this = this;
+    var self = this;
 
     /**
      * Local node-rest-client variable
@@ -52,8 +47,7 @@ module.exports = function(api_endpoint, options){
      */
     var args = {
         headers: { 
-            "Accept": "application/vnd.vegvesen.nvdb-v1+json", 
-            "Content-Type": "application/vnd.vegvesen.nvdb-v1+json; charset=utf-8"
+            "Accept": "application/vnd.vegvesen.nvdb-v1+json"
         },
         requestConfig: {
             timeout: 1000,
@@ -77,6 +71,13 @@ module.exports = function(api_endpoint, options){
         }   
     }
 
+    /* if api_endpoint arg was not supplied, we set it to default */
+    if(typeof api_endpoint === 'undefined'){
+        apiEndpoint = "https://www.vegvesen.no/nvdb/api";
+    }else{
+        apiEndpoint = api_endpoint;
+    }
+
     /**
      * Connect to the API endpoint, and fetch resources
      * @param function callback
@@ -88,9 +89,9 @@ module.exports = function(api_endpoint, options){
                 async.forEachOf(
                     data.ressurser, 
                     function(value, key, _callback){
-                        var node = _toCamelCase(value.rel);
+                        var node = toCamelCase(value.rel);
                         var url = value.uri;
-                        _this[node] = {};
+                        self[node] = {};
                         client.get(apiEndpoint + url, args, function(data, response){
                             try{
                                 var data = JSON.parse(data.toString());
@@ -98,13 +99,13 @@ module.exports = function(api_endpoint, options){
                                 async.forEachOf(
                                     data.ressurser, 
                                     function(value, key, __callback){
-                                        _this[node][_toCamelCase(value.rel)] = factory.create(client, args, apiEndpoint, value);
+                                        self[node][toCamelCase(value.rel)] = factory.create(client, args, apiEndpoint, value);
                                         __callback();
                                     }, 
                                     _callback
                                 );
                             }catch(e){
-                                delete _this[node];
+                                delete self[node];
                                 log.warning("API " + url + " is currently not available");
                                 _callback();
                             };
@@ -112,9 +113,9 @@ module.exports = function(api_endpoint, options){
                     }, 
                     function(){
                         /* Remove empty API nodes */
-                        Object.keys(_this).forEach(function(key,index){
-                            if(isEmpty(_this[key])){
-                                delete _this[key];
+                        Object.keys(self).forEach(function(key,index){
+                            if(isEmpty(self[key])){
+                                delete self[key];
                             };
                         });
                         if(typeof callback !== 'undefined'){
@@ -129,4 +130,5 @@ module.exports = function(api_endpoint, options){
             log.error('something went wrong on the request');
         });
     };
+
 };
