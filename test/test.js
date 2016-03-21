@@ -6,10 +6,10 @@ var Helpers = require("../lib/helpers.js");
 
 describe('Helpers', function() {
     describe('toCamelCase', function () {
-        it('"this-is-a-test#-æøå"', function () {
+        it('Test case #1', function () {
             assert.equal(Helpers.toCamelCase("this-is-a-test#-æøå"), 'thisIsATestAoa');
         });
-        it('"this_i s #&/$&$) -a-test-æøå"', function () {
+        it('Test case #2', function () {
             assert.equal(Helpers.toCamelCase("this_i      s #&/$&$) -a-test-æøå"), 'thisisATestAoa');
         });
     });
@@ -37,12 +37,12 @@ describe('Helpers', function() {
 
 describe('Vegvesen', function() {
 	describe('Constructor', function () {
-    	it('Connect function', function () {
+    	it('Object constructed', function () {
     		assert.equal(typeof vegvesen.connect, 'function');
     	});
   	});
-	describe('API objects', function () {
-    	it('API has child objects', function () {
+	describe('Connect', function () {
+    	it('Connect successful', function () {
     		vegvesen.connect(function(){
     			var objects = 0;
     			for(obj in vegvesen){
