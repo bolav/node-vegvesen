@@ -1,4 +1,6 @@
 /**
+ * Main module 
+ *
  * @package vegvesen
  * @copyright (c) 2016, Thomas Alrek
  * @author Thomas Alrek <thomas@alrek.no>
