@@ -1,12 +1,13 @@
 /**
  * Calculate average speed limit in Austevoll kommune, using NVDB data
+ * WARNING: If the search area is large, this will take a long time!
  *
  * @package vegvesen
  * @copyright (c) 2016, Thomas Alrek
  * @author Thomas Alrek <thomas@alrek.no>
  */
 
-var vegvesenClient  = require("../vegvesen.js");	//replace with require("vegvesen") in production
+var vegvesenClient  = require("../index.js");	//replace with require("vegvesen") in production
 var vegvesen = new vegvesenClient();			//create a new instance of vegvesenClient
 
 var searchObject = {

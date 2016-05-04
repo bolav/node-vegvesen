@@ -8,7 +8,7 @@
 
 /* See https://www.vegvesen.no/nvdb/api/dokumentasjon/sok for documentation of search object */
 
-var vegvesenClient  = require("../vegvesen.js");	//replace with require("vegvesen") in production
+var vegvesenClient  = require("../index.js");	//replace with require("vegvesen") in production
 var vegvesen = new vegvesenClient();			//create a new instance of vegvesenClient
 
 var searchObject = {
