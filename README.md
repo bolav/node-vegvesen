@@ -18,8 +18,8 @@ You can also download it manually.
 ### Usage
 
 ```javascript
-var vegvesenClient  = require("vegvesen");
-var vegvesen = new vegvesenClient();
+var VegvesenClient  = require("vegvesen");
+var vegvesen = new VegvesenClient();
 
 vegvesen.connect(function(){
     vegvesen.vegobjekter.spesifiktVegobjekt(82559833, function(obj){
