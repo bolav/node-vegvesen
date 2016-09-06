@@ -13,7 +13,7 @@ NodeJS wrapper for Statens Vegvesen's NVDB REST APIs
 `npm install vegvesen`
 
 You can also download it manually. 
-* [Latest stable release](https://github.com/alrek-consulting/node-vegvesen/releases/latest)
+* [Latest stable release](https://github.com/thomas-alrek/node-vegvesen/releases/latest)
 
 ### Usage
 
