@@ -1,11 +1,11 @@
 {
   "name": "vegvesen",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Node.JS wrapper for Statens Vegvesens NVDB REST APIs",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alrek-consulting/node-vegvesen.git"
+    "url": "git+https://github.com/thomas-alrek/node-vegvesen.git"
   },
   "keywords": [
     "vegvesen",
@@ -17,15 +17,15 @@
   "author": "Thomas Alrek <thomas@alrek.no>",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/alrek-consulting/node-vegvesen/issues"
+    "url": "https://github.com/thomas-alrek/node-vegvesen/issues"
   },
-  "homepage": "https://github.com/alrek-consulting/node-vegvesen#readme",
+  "homepage": "https://github.com/thomas-alrek/node-vegvesen#readme",
   "scripts": {
     "test": "mocha --reporter spec test"
   },
   "dependencies": {
-    "async": "^1.5.2",
-    "node-rest-client": "^1.8.0"
+    "async": "^2.0.1",
+    "node-rest-client": "^2.0.1"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
