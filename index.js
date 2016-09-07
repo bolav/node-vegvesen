@@ -6,7 +6,7 @@
  * @author Thomas Alrek <thomas@alrek.no>
  */
 
-module.exports = function(api_endpoint, options){
+var Vegvesen = function(api_endpoint, options){
 
     /* load required libs */
     var async = require("async"),
@@ -134,3 +134,10 @@ module.exports = function(api_endpoint, options){
     };
 
 };
+
+module.exports = Vegvesen;
+
+/*
+if(typeof window !== 'undefined'){
+    window.Vegvesen = Vegvesen;
+}*/
