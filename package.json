@@ -36,6 +36,7 @@
     "mocha": "^2.4.5",
     "chai": "^3.5.0",
     "uglify-js": "^2.7.3",
+    "colors": "^1.1.2",
     "browserify": "^13.1.0",
     "http-browserify": "^1.7.0"
   }
