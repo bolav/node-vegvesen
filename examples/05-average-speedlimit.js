@@ -1,5 +1,5 @@
 /**
- * Calculate average speed limit in Austevoll kommune, using NVDB data
+ * Calculate average speed limit in given muncipality, using NVDB data
  * WARNING: If the search area is large, this will take a long time!
  *
  * @package vegvesen
@@ -10,14 +10,25 @@
 var vegvesenClient  = require("../index.js");	//replace with require("vegvesen") in production
 var vegvesen = new vegvesenClient();			//create a new instance of vegvesenClient
 
+var kommune = 1201; //1201 == Bergen kommune
+var kommuneNavn;
+
+function findKommune(kommuner){
+    return kommuner.nummer === kommune;   
+}
+
 var searchObject = {
-	lokasjon: {kommune: [1244]},
-	objektTyper: [{id: 105, antall: 2000}]
+	lokasjon: {kommune: [kommune]},
+	objektTyper: [{id: 105, antall: 9999}]
 }
 
 var averageSpeed = 0;
 
 vegvesen.connect(function(){
+    vegvesen.omrader.kommuner(function(obj){
+       kommuneNavn = obj.kommuner.find(findKommune).navn;
+        console.log("Fetching data for " + kommuneNavn + ", please wait...");
+    });
     vegvesen.sokegrensesnitt.sok(searchObject, function(obj){
         var results = obj.resultater[0].vegObjekter;
         for(item in results){
@@ -29,9 +40,8 @@ vegvesen.connect(function(){
             }
         }
         averageSpeed = (averageSpeed / obj.totaltAntallReturnert).toFixed(2);
-        console.log("Average speed limit in Austevoll kommune is " + averageSpeed + " km/h");
+        console.log("Average speed limit in " + kommuneNavn + " is " + averageSpeed + " km/h");
     });
-    console.log("Fetching data, please wait...");
 });
 
 console.log("Connecting...");
