@@ -89,7 +89,7 @@ vegvesen.vegobjekter.spesifiktVegobjekt(487458622, function(data){
     console.log(data);
 });
 ```
-More examples can be found under the folder "examples"
+More examples can be found under the folder ["examples"](examples)
 
 ### Methods
 
