@@ -5,6 +5,7 @@ NodeJS wrapper for Statens Vegvesen's NVDB REST APIs
 * [Usage](#usage)
 * [Examples](#examples)
 * [Methods](#methods)
+* [Contributing](#contributing)
 * [Contact](#contact)
 * [Legal](#legal)
 
@@ -127,6 +128,13 @@ functions exposed by the API:
 
 ##### endringer
 * endringerObjekttype()
+
+### Contributing
+
+Do you want to help me with the development of node-vegvesen? Great!
+If you would like to contribute to the node-vegvesen project, please check out the contribution guide in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+If you don't know how to contribute, but still have some suggestions, please create a new Issue, or contact me directly. Please check out the [Contact](#contact) information for more.
 
 ### Contact
 
