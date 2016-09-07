@@ -5,6 +5,7 @@ NodeJS wrapper for Statens Vegvesen's NVDB REST APIs
 * [Usage](#usage)
 * [Examples](#examples)
 * [Methods](#methods)
+* [Building](#building)
 * [Contributing](#contributing)
 * [Contact](#contact)
 * [Legal](#legal)
@@ -128,6 +129,19 @@ functions exposed by the API:
 
 ##### endringer
 * endringerObjekttype()
+
+### Building
+
+In version 0.3.0 build scripts was implemented. In the future, this will make it possible to build a browser compatible version of this client.
+As of now it isn't working, because there is still some dependencies issues that needs to be worked out.
+The build script however does work, and can be testet today.
+
+To build node-vegvesen run the following command inside the root directory of the sources:
+
+> npm run-script build
+
+This will build a bundled file, and a bundled + minified file under the dist directory.
+There is also a prepublish hook in the package.json that automatically builds before publishing to npm.
 
 ### Contributing
 
