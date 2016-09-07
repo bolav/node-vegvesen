@@ -4,7 +4,7 @@
  * This script automatically bundles and minifies package.json
  * into a single file, located under ./dist
  * 
- * @package jsgame
+ * @package node-vegvesen
  * @copyright (c) 2016, Thomas Alrek
  * @author Thomas Alrek <thomas@alrek.no>
  */
