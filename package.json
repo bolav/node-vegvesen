@@ -21,7 +21,12 @@
   },
   "homepage": "https://github.com/thomas-alrek/node-vegvesen#readme",
   "scripts": {
-    "test": "mocha --reporter spec test"
+    "test": "mocha --reporter spec test",
+    "build": "node scripts/build",
+    "prepublish": "npm run-script build"
+  },
+  "browser": {
+    "http": "http-browserify"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -29,6 +34,9 @@
   },
   "devDependencies": {
     "mocha": "^2.4.5",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "uglify-js": "^2.7.3",
+    "browserify": "^13.1.0",
+    "http-browserify": "^1.7.0"
   }
 }
