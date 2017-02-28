@@ -10,8 +10,8 @@ var vegvesenClient  = require("../index.js");	//replace with require("vegvesen")
 var vegvesen = new vegvesenClient();			//create a new instance of vegvesenClient
 
 vegvesen.connect(function(){
-	/* fetch vegObjekt with id 82559833 from NVDB */
-    vegvesen.vegobjekter.spesifiktVegobjekt(82559833, function(obj){
+	/* fetch vegObjekt with type 45 and id 82559833 from NVDB */
+    vegvesen.vegobjekter([45, 82559833], { srid: 4326 },  function(obj){
         console.log(obj);
     });
 });

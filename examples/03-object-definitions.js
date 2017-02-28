@@ -10,7 +10,7 @@ var vegvesenClient  = require("../index.js");	//replace with require("vegvesen")
 var vegvesen = new vegvesenClient();			//create a new instance of vegvesenClient
 
 vegvesen.connect(function(){
-    vegvesen.definisjoner.vegobjektTyper(function(obj){
+    vegvesen.vegobjekttyper(function(obj){
         console.log(obj);
     });
 });

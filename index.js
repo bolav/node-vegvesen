@@ -49,7 +49,8 @@ var Vegvesen = function(api_endpoint, options){
      */
     var args = {
         headers: { 
-            "Accept": "application/vnd.vegvesen.nvdb-v1+json"
+            "Accept": "application/vnd.vegvesen.nvdb-v2+json",
+            "X-Client": "vegvesen npm 0.3.1"
         },
         requestConfig: {
             timeout: 1000,
@@ -75,7 +76,7 @@ var Vegvesen = function(api_endpoint, options){
 
     /* if api_endpoint arg was not supplied, we set it to default */
     if(typeof api_endpoint === 'undefined'){
-        apiEndpoint = "https://www.vegvesen.no/nvdb/api";
+        apiEndpoint = "https://www.vegvesen.no/nvdb/api/v2";
     }else{
         apiEndpoint = api_endpoint;
     }
@@ -88,43 +89,14 @@ var Vegvesen = function(api_endpoint, options){
         client.get(apiEndpoint + '/', args, function(data, response){
             try{
                 var data = JSON.parse(data.toString());
-                async.forEachOf(
-                    data.ressurser, 
-                    function(value, key, _callback){
-                        var node = toCamelCase(value.rel);
-                        var url = value.uri;
-                        self[node] = {};
-                        client.get(apiEndpoint + url, args, function(data, response){
-                            try{
-                                var data = JSON.parse(data.toString());
-
-                                async.forEachOf(
-                                    data.ressurser, 
-                                    function(value, key, __callback){
-                                        self[node][toCamelCase(value.rel)] = factory.create(client, args, apiEndpoint, value);
-                                        __callback();
-                                    }, 
-                                    _callback
-                                );
-                            }catch(e){
-                                delete self[node];
-                                log.warning("API " + url + " is currently not available");
-                                _callback();
-                            };
-                        });
-                    }, 
-                    function(){
-                        /* Remove empty API nodes */
-                        Object.keys(self).forEach(function(key,index){
-                            if(isEmpty(self[key])){
-                                delete self[key];
-                            };
-                        });
-                        if(typeof callback !== 'undefined'){
-                            callback();
-                        };
-                    }
-                );
+                data.forEach(function(obj,index){
+                    var node = toCamelCase(obj.navn);
+                    var url = obj.href;
+                    self[node] = factory.create(client, args, obj);
+                });
+                if(typeof callback !== 'undefined'){
+                    callback();
+                };
             }catch(e){
                 log.error(e.message);
             }

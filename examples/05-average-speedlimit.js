@@ -23,23 +23,25 @@ var searchObject = {
 }
 
 var averageSpeed = 0;
+var found = 0;
 
 vegvesen.connect(function(){
-    vegvesen.omrader.kommuner(function(obj){
-       kommuneNavn = obj.kommuner.find(findKommune).navn;
+    vegvesen.omrader(['kommuner'], function(obj){
+       kommuneNavn = obj.find(findKommune).navn;
         console.log("Fetching data for " + kommuneNavn + ", please wait...");
     });
-    vegvesen.sokegrensesnitt.sok(searchObject, function(obj){
-        var results = obj.resultater[0].vegObjekter;
+    vegvesen.vegobjekter([105], { kommune: kommune, antall: 9999, inkluder: "egenskaper" }, function(obj){
+        var results = obj.objekter;
         for(item in results){
             var speedObject = results[item].egenskaper;
             for(properties in speedObject){
                 if(speedObject[properties].id === 2021){
                     averageSpeed += parseInt(speedObject[properties].verdi);
+                    found++;
                 }
             }
         }
-        averageSpeed = (averageSpeed / obj.totaltAntallReturnert).toFixed(2);
+        averageSpeed = (averageSpeed / found).toFixed(2);
         console.log("Average speed limit in " + kommuneNavn + " is " + averageSpeed + " km/h");
     });
 });

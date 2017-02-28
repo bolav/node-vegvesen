@@ -17,7 +17,7 @@ var searchObject = {
 }
 
 vegvesen.connect(function(){
-    vegvesen.sokegrensesnitt.sok(searchObject, function(obj){
+    vegvesen.vegobjekter([105], {kommune: 1201, antall: 10}, function(obj){
         console.log(obj);
     });
 });
